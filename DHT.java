@@ -59,6 +59,33 @@ public class DHT {
         }
     }
 
+    public void storeDataInDHT(int dataId, String data) {
+        Node closestNode = findClosestNode(dataId);
+        closestNode.storeData(dataId, data);
+    }
+
+    private Node findClosestNode(int dataId) {
+        Node closestNode = null;
+        int closestDistance = Integer.MAX_VALUE;
+
+        for (Node node : this.nodes) {
+            int currentDistance = Math.abs(node.getNodeId() - dataId);
+            if (currentDistance < closestDistance) {
+                closestDistance = currentDistance;
+                closestNode = node;
+            }
+        }
+
+        return closestNode;
+    }
+    public Node findNodeById(int nodeId) {
+        for (Node node : this.nodes) {
+            if (node.getNodeId() == nodeId) {
+                return node;
+            }
+        }
+        return null; // Retourne null si le nœud n'est pas trouvé
+    }
     // Méthode pour afficher l'état actuel de l'anneau
     public void printRing() {
         for (Node node : this.nodes) {

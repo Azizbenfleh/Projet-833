@@ -1,15 +1,17 @@
 
 package DHT_AZIZ;
-
+import java.util.HashMap;
 public class Node {
     private int nodeId;
     Node leftNeighbor;
     Node rightNeighbor;
+    private HashMap<Integer, String> dataStorage; // Stockage des données
 
     public Node(int nodeId) {
         this.nodeId = nodeId;
         this.leftNeighbor = null;
         this.rightNeighbor = null;
+        this.dataStorage = new HashMap<>();
     }
 
     public void joinRight(Node existingNode) {
@@ -74,6 +76,19 @@ public class Node {
             System.out.println("Transfert du message du nœud " + this.nodeId + " au nœud " + this.rightNeighbor.getNodeId());
             this.rightNeighbor.sendMessage(message);
         }
+    }
+    // Méthode pour stocker une donnée
+    public void storeData(int dataId, String data) {
+        // Stocker la donnée dans ce nœud
+        this.dataStorage.put(dataId, data);
+        System.out.println("Donnée stockée dans le nœud " + this.nodeId + ": " + data);
+
+        // Réplication sur les voisins immédiats
+        this.leftNeighbor.dataStorage.put(dataId, data);
+        System.out.println("Donnée répliquée dans le nœud voisin gauche " + this.leftNeighbor.nodeId);
+
+        this.rightNeighbor.dataStorage.put(dataId, data);
+        System.out.println("Donnée répliquée dans le nœud voisin droit " + this.rightNeighbor.nodeId);
     }
 
     public int getNodeId() {
