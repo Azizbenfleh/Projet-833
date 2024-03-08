@@ -1,18 +1,18 @@
 
 package DHT_AZIZ;
 
-public class NODE {
+public class Node {
     private int nodeId;
-    private NODE leftNeighbor;
-    private NODE rightNeighbor;
+    Node leftNeighbor;
+    Node rightNeighbor;
 
-    public NODE(int nodeId) {
+    public Node(int nodeId) {
         this.nodeId = nodeId;
         this.leftNeighbor = null;
         this.rightNeighbor = null;
     }
 
-    public void joinRight(NODE existingNode) {
+    public void joinRight(Node existingNode) {
         if (existingNode == null) {
             // Si existingNode est null, le nouveau nœud est le premier dans la DHT
             this.leftNeighbor = this;
@@ -33,7 +33,7 @@ public class NODE {
     }
 
 
-    public void joinLeft(NODE existingNode) {
+    public void joinLeft(Node existingNode) {
         if (existingNode == null) {
             // Si existingNode est null, le nouveau nœud est le premier dans la DHT
             this.leftNeighbor = this;
@@ -69,11 +69,11 @@ public class NODE {
         return nodeId;
     }
 
-    public NODE getLeftNeighbor() {
+    public Node getLeftNeighbor() {
         return leftNeighbor;
     }
 
-    public NODE getRightNeighbor() {
+    public Node getRightNeighbor() {
         return rightNeighbor;
     }
 }
