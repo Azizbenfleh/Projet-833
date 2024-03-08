@@ -64,6 +64,17 @@ public class Node {
         this.leftNeighbor.rightNeighbor = this.rightNeighbor;
         this.rightNeighbor.leftNeighbor = this.leftNeighbor;
     }
+    // Méthode pour envoyer un message à un autre nœud
+    public void sendMessage(Message message) {
+        // Vérifie si ce nœud est le destinataire
+        if (this.nodeId == message.getReceiverId()) {
+            System.out.println("Message reçu par le nœud " + this.nodeId + ": " + message.getContent());
+        } else {
+            // Sinon, passe le message au voisin de droite
+            System.out.println("Transfert du message du nœud " + this.nodeId + " au nœud " + this.rightNeighbor.getNodeId());
+            this.rightNeighbor.sendMessage(message);
+        }
+    }
 
     public int getNodeId() {
         return nodeId;
