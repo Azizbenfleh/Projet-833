@@ -5,6 +5,9 @@ public class Message {
     private int receiverId; // Identifiant du nœud destinataire
     private String content; // Contenu du message
 
+    // Partie avancée
+    // private PiggybackedInfo piggybackedInfo;
+
     // Constructeur
     public Message(int senderId, int receiverId, String content) {
         this.senderId = senderId;

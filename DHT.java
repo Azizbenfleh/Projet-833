@@ -11,35 +11,50 @@ public class DHT {
     }
 
     // Méthode pour ajouter un nœud dans l'anneau
+    // Méthode pour ajouter un nœud dans l'anneau
     public void addNode(int nodeId) {
         Node newNode = new Node(nodeId);
         if (this.nodes.isEmpty()) {
-            // Premier nœud de l'anneau
-            newNode.joinRight(newNode); // Il devient son propre voisin de droite et de gauche
+            // Si c'est le premier nœud de l'anneau
+            newNode.leftNeighbor = newNode; // Il devient son propre voisin de gauche
+            newNode.rightNeighbor = newNode; // Et son propre voisin de droite
             this.nodes.add(newNode);
         } else {
-            // Insérer le nouveau nœud en maintenant l'ordre des identifiants
+            // Trouver l'index où insérer le nouveau nœud
             int index = 0;
             while (index < this.nodes.size() && this.nodes.get(index).getNodeId() < nodeId) {
                 index++;
             }
-            this.nodes.add(index % this.nodes.size(), newNode);
+            this.nodes.add(index, newNode); // Insère le nouveau nœud à l'index trouvé
 
             // Mise à jour des voisins
-            if (this.nodes.size() > 1) {
-                Node leftNeighbor = (index == 0) ? this.nodes.get(this.nodes.size() - 2) : this.nodes.get((index - 1) % this.nodes.size());
-                Node rightNeighbor = this.nodes.get((index + 1) % this.nodes.size());
-                newNode.joinRight(leftNeighbor);
-                newNode.joinLeft(rightNeighbor);
+            Node leftNeighbor, rightNeighbor;
+            if (index == 0) {
+                // Insertion au début
+                leftNeighbor = this.nodes.get(this.nodes.size() - 1); // Dernier devient le voisin gauche
+                rightNeighbor = this.nodes.get(1); // Le suivant dans la liste devient le voisin droit
+            } else if (index == this.nodes.size() - 1) {
+                // Insertion à la fin
+                leftNeighbor = this.nodes.get(index - 1); // Le précédent dans la liste devient le voisin gauche
+                rightNeighbor = this.nodes.get(0); // Le premier devient le voisin droit
+            } else {
+                // Insertion au milieu
+                leftNeighbor = this.nodes.get(index - 1);
+                rightNeighbor = this.nodes.get(index + 1);
             }
+
+            // Mise à jour des références des voisins
+            newNode.leftNeighbor = leftNeighbor;
+            newNode.rightNeighbor = rightNeighbor;
+            leftNeighbor.rightNeighbor = newNode;
+            rightNeighbor.leftNeighbor = newNode;
         }
-        // Mise à jour des liaisons pour tous les nœuds après ajout
-        for (int i = 0; i < this.nodes.size(); i++) {
-            Node current = this.nodes.get(i);
-            Node left = this.nodes.get((i + this.nodes.size() - 1) % this.nodes.size()); // Précédent dans la liste ou dernier si premier
-            Node right = this.nodes.get((i + 1) % this.nodes.size()); // Suivant dans la liste ou premier si dernier
-            current.leftNeighbor = left;
-            current.rightNeighbor = right;
+
+        // Correction nécessaire seulement si l'anneau a plus de deux nœuds
+        if (this.nodes.size() > 2) {
+            // Ajustement des voisins pour le cas où l'insertion est au début ou à la fin
+            this.nodes.get(0).leftNeighbor = this.nodes.get(this.nodes.size() - 1);
+            this.nodes.get(this.nodes.size() - 1).rightNeighbor = this.nodes.get(0);
         }
     }
 

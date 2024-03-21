@@ -12,10 +12,10 @@ public class TestNode {
         
         
         
-        Node3.joinLeft(Node1);
+        /*Node3.joinLeft(Node1);
         Node2.joinRight(Node1);
         Node4.joinLeft(Node2);
-        Node5.joinRight(Node2);
+        Node5.joinRight(Node2);*/
         
         
         // Test the neighbors of each Node

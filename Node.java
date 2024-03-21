@@ -10,6 +10,27 @@ public class Node {
     private HashMap<Integer, String> dataStorage; // Stockage des données
     private static final Logger LOGGER = Logger.getLogger(Node.class.getName());
 
+    //Partie avancée non terminée
+    //Triche pour les liens longs
+    /*private Node longLink;
+
+    // Méthode dans DHT pour établir des liens longs lors de l'ajout d'un nœud
+    public void addLongLink(Node newNode) {
+        // Exemple : lien vers le nœud avec un ID le plus proche de (nodeId + 10) comme lien long
+        Node longLinkNode = findClosestNode(newNode.getNodeId() + 10);
+        newNode.setLongLink(longLinkNode);
+    }*/
+    /*
+    // Exemple de méthode dans Node pour gérer les informations piggybacked
+    public void handleMessage(Message message) {
+        // Exemple de mise à jour de la table de routage avec des infos piggybacked
+        updateRoutingTableWithPiggybackedInfo(message.getPiggybackedInfo());
+
+        // Poursuivre le routage du message comme précédemment
+        sendMessage(message);
+    }*/
+
+
     public Node(int nodeId) {
         this.nodeId = nodeId;
         this.leftNeighbor = null;
@@ -17,46 +38,12 @@ public class Node {
         this.dataStorage = new HashMap<>();
     }
 
-    public void joinRight(Node existingNode) {
-        if (existingNode == null) {
-            // Si existingNode est null, le nouveau nœud est le premier dans la DHT
-            this.leftNeighbor = this;
-            this.rightNeighbor = this;
-        } else {
-            // Insérer le nouveau nœud à droite de existingNode
-            if (existingNode.rightNeighbor != null) {
-                this.rightNeighbor = existingNode.rightNeighbor;
-                this.leftNeighbor = existingNode;
-                existingNode.rightNeighbor.leftNeighbor = this;
-                existingNode.rightNeighbor = this;
-            } else {
-                // Si existingNode n'a pas de voisin droit, le nouveau nœud devient son voisin droit
-                existingNode.rightNeighbor = this;
-                this.leftNeighbor = existingNode;
-            }
-        }
-    }
-
-
-    public void joinLeft(Node existingNode) {
-        if (existingNode == null) {
-            // Si existingNode est null, le nouveau nœud est le premier dans la DHT
-            this.leftNeighbor = this;
-            this.rightNeighbor = this;
-        } else {
-            // Insérer le nouveau nœud à gauche de existingNode
-            if (existingNode.leftNeighbor != null) {
-                this.leftNeighbor = existingNode.leftNeighbor;
-                this.rightNeighbor = existingNode;
-                existingNode.leftNeighbor.rightNeighbor = this;
-                existingNode.leftNeighbor = this;
-            } else {
-                // Si existingNode n'a pas de voisin gauche, le nouveau nœud devient son voisin gauche
-                existingNode.leftNeighbor = this;
-                this.rightNeighbor = existingNode;
-                this.leftNeighbor = existingNode;
-            }
-        }
+    // Méthode renommée pour refléter son but de mise à jour des voisins
+    public void updateNeighbors(Node leftNeighbor, Node rightNeighbor) {
+        this.leftNeighbor = leftNeighbor;
+        this.rightNeighbor = rightNeighbor;
+        leftNeighbor.rightNeighbor = this;
+        rightNeighbor.leftNeighbor = this;
     }
 
 

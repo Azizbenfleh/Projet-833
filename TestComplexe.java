@@ -41,5 +41,12 @@ public class TestComplexe {
         if (dht.findNodeById(10) != null) {
             dht.findNodeById(10).sendMessage(new Message(10, 40, "Hello du nœud 10 au nœud 40, après ajustement!"));
         }
+
+        // Essai de rajouter un nœud après la suppression
+        LOGGER.info("\nAjout d'un nœud après la suppression :");
+        dht.addNode(20);
+        LOGGER.info("\nÉtat de l'anneau DHT après l'ajout du nœud :");
+        dht.printRing();
+
     }
 }
