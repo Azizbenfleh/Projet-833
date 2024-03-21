@@ -1,11 +1,14 @@
 
 package DHT_AZIZ;
 import java.util.HashMap;
+import java.util.logging.Logger;
+
 public class Node {
     private int nodeId;
     Node leftNeighbor;
     Node rightNeighbor;
     private HashMap<Integer, String> dataStorage; // Stockage des données
+    private static final Logger LOGGER = Logger.getLogger(Node.class.getName());
 
     public Node(int nodeId) {
         this.nodeId = nodeId;
@@ -68,12 +71,12 @@ public class Node {
     }
     // Méthode pour envoyer un message à un autre nœud
     public void sendMessage(Message message) {
-        // Vérifie si ce nœud est le destinataire
         if (this.nodeId == message.getReceiverId()) {
-            System.out.println("Message reçu par le nœud " + this.nodeId + ": " + message.getContent());
+            LOGGER.info(String.format("[%s] Message reçu par le nœud %d : %s",
+                    new java.util.Date(), this.nodeId, message.getContent()));
         } else {
-            // Sinon, passe le message au voisin de droite
-            System.out.println("Transfert du message du nœud " + this.nodeId + " au nœud " + this.rightNeighbor.getNodeId());
+            LOGGER.info(String.format("[%s] Transfert du message du nœud %d au nœud %d",
+                    new java.util.Date(), this.nodeId, this.rightNeighbor.getNodeId()));
             this.rightNeighbor.sendMessage(message);
         }
     }
